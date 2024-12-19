@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="GPvp8NXPYxNlQOz9NarDxF5wMu2GpoiC6_txrpmFAVo">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"shoewann0402.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.21.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":"mac"},"fold":{"enable":true,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="在 HarmonyOS 中如何使用 Native C++">
+<meta property="og:url" content="https://shoewann0402.github.io/posts/92e22166.html">
+<meta property="og:site_name" content="Shoewann&#39;s Personal Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shoewann0402.github.io/posts/92e22166/image.png">
+<meta property="og:image" content="https://shoewann0402.github.io/posts/92e22166/about-deveco-studio.png">
+<meta property="og:image" content="https://shoewann0402.github.io/posts/92e22166/image.png">
+<meta property="og:image" content="https://shoewann0402.github.io/posts/92e22166/default_project.png">
+<meta property="og:image" content="https://shoewann0402.github.io/posts/92e22166/default_project_cmake.png">
+<meta property="og:image" content="https://shoewann0402.github.io/posts/92e22166/demo_output_result.png">
+<meta property="article:published_time" content="2024-12-19T01:28:27.000Z">
+<meta property="article:modified_time" content="2024-12-19T03:19:46.631Z">
+<meta property="article:author" content="Shoewann">
+<meta property="article:tag" content="HarmonyOS">
+<meta property="article:tag" content="Native">
+<meta property="article:tag" content="so">
+<meta property="article:tag" content="cmake">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shoewann0402.github.io/posts/92e22166/image.png">
+
+
+<link rel="canonical" href="https://shoewann0402.github.io/posts/92e22166.html">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://shoewann0402.github.io/posts/92e22166.html","path":"posts/92e22166.html","title":"在 HarmonyOS 中如何使用 Native C++"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在 HarmonyOS 中如何使用 Native C++ | Shoewann's Personal Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-82400413-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-82400413-1","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?27dc35cebcac5cc403c892eca7cd5130"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="Shoewann's Personal Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Shoewann's Personal Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">移动端应用相关技术记录总结</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">分析项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%A1%B9%E7%9B%AE"><span class="nav-number">4.</span> <span class="nav-text">修改项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="nav-number">4.1.</span> <span class="nav-text">链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">4.3.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9D%97"><span class="nav-number">4.4.</span> <span class="nav-text">定义模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E6%A8%A1%E5%9D%97"><span class="nav-number">4.5.</span> <span class="nav-text">注册模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">4.6.</span> <span class="nav-text">定义调用函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5"><span class="nav-number">4.7.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8"><span class="nav-number">4.8.</span> <span class="nav-text">调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">运行项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA"><span class="nav-number">5.1.</span> <span class="nav-text">输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-number">6.</span> <span class="nav-text">效果图</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shoewann"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Shoewann</p>
+  <div class="site-description" itemprop="description">逆向开发工程师</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="mailto:xuwang0402@gmail.com" title="E-Mail → mailto:xuwang0402@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://bbs.kanxue.com/" title="https:&#x2F;&#x2F;bbs.kanxue.com&#x2F;" rel="noopener" target="_blank">看雪论坛</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://iosre.com/" title="https:&#x2F;&#x2F;iosre.com&#x2F;" rel="noopener" target="_blank">睿论坛</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://developer.huawei.com/consumer/cn/" title="https:&#x2F;&#x2F;developer.huawei.com&#x2F;consumer&#x2F;cn&#x2F;" rel="noopener" target="_blank">鸿蒙开发者官网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://developer.android.google.cn/?hl=zh-cn/" title="https:&#x2F;&#x2F;developer.android.google.cn&#x2F;?hl&#x3D;zh-cn&#x2F;" rel="noopener" target="_blank">安卓开发者官网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://developers.google.cn/" title="https:&#x2F;&#x2F;developers.google.cn&#x2F;" rel="noopener" target="_blank">谷歌开发者官网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://developer.apple.com/" title="https:&#x2F;&#x2F;developer.apple.com&#x2F;" rel="noopener" target="_blank">苹果开发者官网</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://developers.weixin.qq.com/doc/" title="https:&#x2F;&#x2F;developers.weixin.qq.com&#x2F;doc&#x2F;" rel="noopener" target="_blank">微信官方文档</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://www.kotlincn.net/" title="https:&#x2F;&#x2F;www.kotlincn.net&#x2F;" rel="noopener" target="_blank">Kotlin语言中文站</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://rust.p2hp.com/index.html" title="https:&#x2F;&#x2F;rust.p2hp.com&#x2F;index.html" rel="noopener" target="_blank">Rust语言中文站</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shoewann0402.github.io/posts/92e22166.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Shoewann">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shoewann's Personal Blog">
+      <meta itemprop="description" content="逆向开发工程师">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在 HarmonyOS 中如何使用 Native C++ | Shoewann's Personal Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在 HarmonyOS 中如何使用 Native C++
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-12-19 09:28:27 / 修改时间：11:19:46" itemprop="dateCreated datePublished" datetime="2024-12-19T09:28:27+08:00">2024-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/HarmonyOS/" itemprop="url" rel="index"><span itemprop="name">HarmonyOS</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/92e22166.html" class="post-meta-item leancloud_visitors" data-flag-title="在 HarmonyOS 中如何使用 Native C++" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    <a title="在 HarmonyOS 中如何使用 Native C++" href="/posts/92e22166.html#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::da2621c7bb137d129fd94cfbae193ad7" class="cy_cmt_count" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img src="/posts/92e22166/image.png"></p>
+<span id="more"></span>
+
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<ul>
+<li>工具: <a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/deveco-studio/">HUAWEI DevEco Studio</a></li>
+</ul>
+</blockquote>
+<p><img src="/posts/92e22166/about-deveco-studio.png"></p>
+<blockquote>
+<ul>
+<li>设备: 支持HarmonyOS NEXT 的设备（真机&#x2F;模拟器）</li>
+</ul>
+</blockquote>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>新建一个项目，选择 [Native C++] 的模版</p>
+<p><img src="/posts/92e22166/image.png"></p>
+<p>然后生成一个默认的工程</p>
+<blockquote>
+<p>API 版本 : <strong>5.0.1 (API 13)</strong></p>
+</blockquote>
+<p><img src="/posts/92e22166/default_project.png"></p>
+<h2 id="分析项目"><a href="#分析项目" class="headerlink" title="分析项目"></a>分析项目</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; hilog &#125; <span class="keyword">from</span> <span class="string">&#x27;@kit.PerformanceAnalysisKit&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> testNapi <span class="keyword">from</span> <span class="string">&#x27;libentry.so&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entry</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line">struct <span class="title class_">Index</span> &#123;</span><br><span class="line">  <span class="meta">@State</span> <span class="attr">message</span>: <span class="built_in">string</span> = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">build</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">Row</span>() &#123;</span><br><span class="line">      <span class="title class_">Column</span>() &#123;</span><br><span class="line">        <span class="title class_">Text</span>(<span class="variable language_">this</span>.<span class="property">message</span>)</span><br><span class="line">          .<span class="title function_">fontSize</span>(<span class="number">50</span>)</span><br><span class="line">          .<span class="title function_">fontWeight</span>(<span class="title class_">FontWeight</span>.<span class="property">Bold</span>)</span><br><span class="line">          .<span class="title function_">onClick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            hilog.<span class="title function_">info</span>(<span class="number">0x0000</span>, <span class="string">&#x27;testTag&#x27;</span>, <span class="string">&#x27;Test NAPI 2 + 3 = %&#123;public&#125;d&#x27;</span>, testNapi.<span class="title function_">add</span>(<span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line">          &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      .<span class="title function_">width</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .<span class="title function_">height</span>(<span class="string">&#x27;100%&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析这个默认工程，根据index.ets代码显示，是在Native下注册是add的计算方法，通过传入两个参数计算和，文中传入了 2 和 3，当点击界面上的Hello world 文本时调用计算方法，日志输出如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12-19  55333-55333   A00000/com..../testTag  com.xw....lication  I     Test NAPI 2 + 3 = 5</span><br></pre></td></tr></table></figure>
+
+<p>点击16行，testNapi.add() 方法跳过去，在 <strong>index.d.ts</strong> 中定义了接口方法</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">add</span>: <span class="function">(<span class="params"><span class="attr">a</span>: <span class="built_in">number</span>, <span class="attr">b</span>: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span>;</span><br></pre></td></tr></table></figure>
+<p>这个 testNapi 又是通过 <strong>libentry.so</strong> 引入的</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> testNapi <span class="keyword">from</span> <span class="string">&#x27;libentry.so&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>在 <strong>CMakeLists</strong> 15行 我们可以链接库的地方</p>
+<p><img src="/posts/92e22166/default_project_cmake.png"></p>
+<p>接着打开 cpp 目录下的 <strong>napi_init.cpp</strong> 文件</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;napi/native_api.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> napi_value <span class="title">Add</span><span class="params">(napi_env env, napi_callback_info info)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">size_t</span> argc = <span class="number">2</span>;</span><br><span class="line">    napi_value args[<span class="number">2</span>] = &#123;<span class="literal">nullptr</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">napi_get_cb_info</span>(env, info, &amp;argc, args , <span class="literal">nullptr</span>, <span class="literal">nullptr</span>);</span><br><span class="line"></span><br><span class="line">    napi_valuetype valuetype0;</span><br><span class="line">    <span class="built_in">napi_typeof</span>(env, args[<span class="number">0</span>], &amp;valuetype0);</span><br><span class="line"></span><br><span class="line">    napi_valuetype valuetype1;</span><br><span class="line">    <span class="built_in">napi_typeof</span>(env, args[<span class="number">1</span>], &amp;valuetype1);</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> value0;</span><br><span class="line">    <span class="built_in">napi_get_value_double</span>(env, args[<span class="number">0</span>], &amp;value0);</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> value1;</span><br><span class="line">    <span class="built_in">napi_get_value_double</span>(env, args[<span class="number">1</span>], &amp;value1);</span><br><span class="line"></span><br><span class="line">    napi_value sum;</span><br><span class="line">    <span class="built_in">napi_create_double</span>(env, value0 + value1, &amp;sum);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">EXTERN_C_START</span></span><br><span class="line"><span class="function"><span class="type">static</span> napi_value <span class="title">Init</span><span class="params">(napi_env env, napi_value exports)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    napi_property_descriptor desc[] = &#123;</span><br><span class="line">        &#123; <span class="string">&quot;add&quot;</span>, <span class="literal">nullptr</span>, Add, <span class="literal">nullptr</span>, <span class="literal">nullptr</span>, <span class="literal">nullptr</span>, napi_default, <span class="literal">nullptr</span> &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">napi_define_properties</span>(env, exports, <span class="built_in">sizeof</span>(desc) / <span class="built_in">sizeof</span>(desc[<span class="number">0</span>]), desc);</span><br><span class="line">    <span class="keyword">return</span> exports;</span><br><span class="line">&#125;</span><br><span class="line">EXTERN_C_END</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> napi_module demoModule = &#123;</span><br><span class="line">    .nm_version = <span class="number">1</span>,</span><br><span class="line">    .nm_flags = <span class="number">0</span>,</span><br><span class="line">    .nm_filename = <span class="literal">nullptr</span>,</span><br><span class="line">    .nm_register_func = Init,</span><br><span class="line">    .nm_modname = <span class="string">&quot;entry&quot;</span>,</span><br><span class="line">    .nm_priv = ((<span class="type">void</span>*)<span class="number">0</span>),</span><br><span class="line">    .reserved = &#123; <span class="number">0</span> &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __attribute__((constructor)) <span class="function"><span class="type">void</span> <span class="title">RegisterEntryModule</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">napi_module_register</span>(&amp;demoModule);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>按照以上的使用流程，接下来实现一个类似的示例</p>
+<h2 id="修改项目"><a href="#修改项目" class="headerlink" title="修改项目"></a>修改项目</h2><blockquote>
+<p>以下通过C API 获取设备信息 <a target="_blank" rel="noopener" href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V13/_device_info-V13">DeviceInfo</a></p>
+</blockquote>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p><strong>CMakeList.txt</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># the minimum version of CMake.</span></span><br><span class="line"><span class="built_in">cmake_minimum_required</span>(VERSION <span class="number">3.5</span><span class="number">.0</span>)</span><br><span class="line"><span class="built_in">project</span>(HMBehavior)</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span>(NATIVERENDER_ROOT_PATH $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(DEFINED PACKAGE_FIND_FILE)</span><br><span class="line">    <span class="built_in">include</span>($&#123;PACKAGE_FIND_FILE&#125;)</span><br><span class="line"><span class="built_in">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="built_in">include_directories</span>($&#123;NATIVERENDER_ROOT_PATH&#125;</span><br><span class="line">                    $&#123;NATIVERENDER_ROOT_PATH&#125;/include)</span><br><span class="line"></span><br><span class="line"><span class="built_in">add_library</span>(entry SHARED napi_init.cpp)</span><br><span class="line"><span class="built_in">target_link_libraries</span>(entry PUBLIC libace_napi.z.so)</span><br><span class="line"># 设备信息</span><br><span class="line"><span class="built_in">target_link_libraries</span>(entry PUBLIC libdeviceinfo_ndk.z.so)</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>在 <strong>napi_init.cpp</strong> 里定义一个函数 <strong>GetDeviceInfo</strong>,实现具体设备信息获取的逻辑</p>
+<p>导包</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;napi/native_api.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;deviceinfo.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取设备信息</span></span><br><span class="line"><span class="comment"> * @param env</span></span><br><span class="line"><span class="comment"> * @param </span></span><br><span class="line"><span class="comment"> * @return</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">static</span> napi_value <span class="title">GetDeviceInfo</span><span class="params">(napi_env env, napi_callback_info)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    std::string deviceType = <span class="string">&quot;设备类型: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetDeviceType</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string manufacture = <span class="string">&quot;设备制造商: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetManufacture</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string brand = <span class="string">&quot;设备设备品牌: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBrand</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string marketName = <span class="string">&quot;外部产品系列: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetMarketName</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string productSeries = <span class="string">&quot;产品系列: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetProductSeries</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string productModel = <span class="string">&quot;认证型号: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetProductModel</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string softwareModel = <span class="string">&quot;内部软件子型号: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetSoftwareModel</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string hardwareModel = <span class="string">&quot;硬件版本号: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetHardwareModel</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string bootloaderVersion = <span class="string">&quot;Bootloader版本号: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBootloaderVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string abiList = <span class="string">&quot;应用二进制接口（Abi）: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetAbiList</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string securityPatchTag = <span class="string">&quot;安全补丁级别: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetSecurityPatchTag</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string displayVersion = <span class="string">&quot;产品版本: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetDisplayVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string IncrementalVersion = <span class="string">&quot;差异版本: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetIncrementalVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string OSReleaseType = <span class="string">&quot;系统的发布类型: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetOsReleaseType</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string OSFullName = <span class="string">&quot;完整的系统版本名: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetOSFullName</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string sdkApiVersion = <span class="string">&quot;系统软件API版本: &quot;</span> + std::<span class="built_in">to_string</span>(<span class="built_in">OH_GetSdkApiVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string firstApiVersion = <span class="string">&quot;首个版本系统软件API版本: &quot;</span> + std::<span class="built_in">to_string</span>(<span class="built_in">OH_GetFirstApiVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string versionId = <span class="string">&quot;版本ID: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetVersionId</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string buildType = <span class="string">&quot;系统的构建类型: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBuildType</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string buildUser = <span class="string">&quot;系统的构建用户: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBuildUser</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string buildHost = <span class="string">&quot;系统的构建主机: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBuildHost</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string buildTime = <span class="string">&quot;完整系统的构建时间: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBuildTime</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string buildRootHash = <span class="string">&quot;系统的构建版本Hash: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetBuildRootHash</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string distributionOSName = <span class="string">&quot;ISV发行系统版本名称: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetDistributionOSName</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string distributionOSVersion = <span class="string">&quot;ISV发行版系统版本号: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetDistributionOSVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string distributionOSApiVersion =<span class="string">&quot;ISV发行版系统api版本: &quot;</span> + std::<span class="built_in">to_string</span>(<span class="built_in">OH_GetDistributionOSApiVersion</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">    std::string distributionOSReleaseType =<span class="string">&quot;ISV发行版系统类型: &quot;</span> + std::<span class="built_in">string</span>(<span class="built_in">OH_GetDistributionOSReleaseType</span>()) + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取每个属性的长度</span></span><br><span class="line">    <span class="type">size_t</span> length1 = <span class="built_in">strlen</span>(deviceType.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length2 = <span class="built_in">strlen</span>(manufacture.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length3 = <span class="built_in">strlen</span>(brand.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length4 = <span class="built_in">strlen</span>(marketName.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length5 = <span class="built_in">strlen</span>(productSeries.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length6 = <span class="built_in">strlen</span>(productModel.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length7 = <span class="built_in">strlen</span>(softwareModel.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length8 = <span class="built_in">strlen</span>(hardwareModel.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length9 = <span class="built_in">strlen</span>(bootloaderVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length10 = <span class="built_in">strlen</span>(abiList.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length11 = <span class="built_in">strlen</span>(securityPatchTag.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length12 = <span class="built_in">strlen</span>(displayVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length13 = <span class="built_in">strlen</span>(IncrementalVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length14 = <span class="built_in">strlen</span>(OSReleaseType.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length15 = <span class="built_in">strlen</span>(OSFullName.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length16 = <span class="built_in">strlen</span>(sdkApiVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length17 = <span class="built_in">strlen</span>(firstApiVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length18 = <span class="built_in">strlen</span>(versionId.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length19 = <span class="built_in">strlen</span>(buildType.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length20 = <span class="built_in">strlen</span>(buildUser.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length21 = <span class="built_in">strlen</span>(buildHost.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length22 = <span class="built_in">strlen</span>(buildTime.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length23 = <span class="built_in">strlen</span>(buildRootHash.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length24 = <span class="built_in">strlen</span>(distributionOSName.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length25 = <span class="built_in">strlen</span>(distributionOSVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length26 = <span class="built_in">strlen</span>(distributionOSApiVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="type">size_t</span> length27 = <span class="built_in">strlen</span>(distributionOSReleaseType.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算拼接后的长度</span></span><br><span class="line">    <span class="type">size_t</span> resultLength = length1 + length2 + length3 + length4 + length5 + length6 + length7 + length8 + length9 +</span><br><span class="line">                          length10 + length11 + length12 + length13 + length14 + length15 + length16 + length17 +</span><br><span class="line">                          length18 + length19 + length20 + length21 + length22 + length23 + length24 + length25 +</span><br><span class="line">                          length26 + length27;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分配内存以存储拼接后的字符串</span></span><br><span class="line">    <span class="type">char</span> *resultStr = (<span class="type">char</span> *)<span class="built_in">malloc</span>(resultLength + <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// 拼接字符串</span></span><br><span class="line">    <span class="built_in">strcpy</span>(resultStr, deviceType.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, manufacture.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, brand.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, marketName.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, productSeries.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, productModel.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, softwareModel.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, hardwareModel.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, bootloaderVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, abiList.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, securityPatchTag.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, displayVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, IncrementalVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, OSReleaseType.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, OSFullName.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, sdkApiVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, firstApiVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, versionId.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, buildType.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, buildUser.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, buildHost.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, buildTime.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, buildRootHash.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, distributionOSName.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, distributionOSVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, distributionOSApiVersion.<span class="built_in">c_str</span>());</span><br><span class="line">    <span class="built_in">strcat</span>(resultStr, distributionOSReleaseType.<span class="built_in">c_str</span>());</span><br><span class="line"></span><br><span class="line">    napi_value result;</span><br><span class="line">    <span class="built_in">napi_create_string_utf8</span>(env, resultStr, resultLength, &amp;result);</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">EXTERN_C_START</span></span><br><span class="line"><span class="function"><span class="type">static</span> napi_value <span class="title">Init</span><span class="params">(napi_env env, napi_value exports)</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">    napi_property_descriptor desc[] = &#123;</span><br><span class="line">        <span class="comment">// 设备信息</span></span><br><span class="line">        &#123;<span class="string">&quot;getDeviceInfo&quot;</span>, <span class="literal">nullptr</span>, GetDeviceInfo, <span class="literal">nullptr</span>, <span class="literal">nullptr</span>, <span class="literal">nullptr</span>, napi_default, <span class="literal">nullptr</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">napi_define_properties</span>(env, exports, <span class="built_in">sizeof</span>(desc) / <span class="built_in">sizeof</span>(desc[<span class="number">0</span>]), desc);</span><br><span class="line">    <span class="keyword">return</span> exports;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="定义模块"><a href="#定义模块" class="headerlink" title="定义模块"></a>定义模块</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">EXTERN_C_END</span><br><span class="line"><span class="type">static</span> napi_module demoModule = &#123;</span><br><span class="line">    .nm_version = <span class="number">1</span>,</span><br><span class="line">    .nm_flags = <span class="number">0</span>,</span><br><span class="line">    .nm_filename = <span class="literal">nullptr</span>,</span><br><span class="line">    .nm_register_func = Init,</span><br><span class="line">    .nm_modname = <span class="string">&quot;entry&quot;</span>,</span><br><span class="line">    .nm_priv = ((<span class="type">void</span> *)<span class="number">0</span>),</span><br><span class="line">    .reserved = &#123;<span class="number">0</span>&#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="注册模块"><a href="#注册模块" class="headerlink" title="注册模块"></a>注册模块</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __attribute__((constructor)) <span class="function"><span class="type">void</span> <span class="title">RegisterEntryModule</span><span class="params">(<span class="type">void</span>)</span> </span>&#123; <span class="built_in">napi_module_register</span>(&amp;demoModule); &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="定义调用函数"><a href="#定义调用函数" class="headerlink" title="定义调用函数"></a>定义调用函数</h3><p><strong>index.d.ts</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="attr">getDeviceInfo</span>: <span class="function">() =&gt;</span> <span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; getDeviceInfo &#125; <span class="keyword">from</span> <span class="string">&#x27;libentry.so&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val deviceinfo = <span class="title function_">getDeviceInfo</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">error</span>(deviceinfo);</span><br></pre></td></tr></table></figure>
+<h2 id="运行项目"><a href="#运行项目" class="headerlink" title="运行项目"></a>运行项目</h2><h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12</span>-<span class="number">19</span> <span class="number">11</span>:<span class="number">08</span>:<span class="number">10.384</span>   <span class="number">21645</span>-<span class="number">21645</span>   <span class="variable constant_">A03D00</span>/com.../<span class="variable constant_">JSAPP</span>  com.<span class="property">xw</span>....<span class="property">lication</span>   E     设备类型： phone, 厂家：<span class="variable constant_">HUAWEI</span>, 品牌：<span class="variable constant_">HUAWEI</span>, 外部产品系列：<span class="variable constant_">HUAWEI</span> <span class="title class_">Mate</span> <span class="number">60</span>, 产品系列：<span class="variable constant_">BRA</span>, 认证型号：<span class="variable constant_">BRA</span>-<span class="title class_">AL00</span>, 内部软件子型号：<span class="variable constant_">BRA</span>-<span class="title class_">AL00</span>, 硬件版本号：<span class="title class_">HL1FLSM</span>, 硬件<span class="title class_">Profile</span>：<span class="keyword">default</span>, <span class="title class_">Bootloader</span>版本号：bootloader, 应用二进制接口（<span class="title class_">Abi</span>）列表：arm64-v8a, 安全补丁级别：<span class="number">2024</span>/<span class="number">11</span>/<span class="number">01</span>, 产品版本：<span class="variable constant_">BRA</span>-<span class="title class_">AL00</span> <span class="number">5.0</span><span class="number">.0</span><span class="number">.110</span>(<span class="title class_">SP6C</span>00E107R4P22), 差异版本号：<span class="keyword">default</span>, 系统的发布类型：<span class="title class_">Beta3</span>, 系统版本：<span class="title class_">OpenHarmony</span>-<span class="number">5.0</span><span class="number">.1</span><span class="number">.107</span>(<span class="title class_">Beta3</span>), <span class="title class_">Major</span>版本号：<span class="number">5</span>, <span class="title class_">Senior</span>版本号：<span class="number">0</span>, <span class="title class_">Feature</span>版本号：<span class="number">1</span>, <span class="title class_">Build</span>版本号：<span class="number">107</span>, 系统软件<span class="variable constant_">API</span>版本：<span class="number">13</span>, 首个版本系统软件<span class="variable constant_">API</span>版本：<span class="number">1</span>, 版本<span class="variable constant_">ID</span>：phone/<span class="variable constant_">HUAWEI</span>/<span class="variable constant_">HUAWEI</span>/<span class="variable constant_">BRA</span>/<span class="title class_">OpenHarmony</span>-<span class="number">5.0</span><span class="number">.1</span><span class="number">.107</span>(<span class="title class_">Beta3</span>)/<span class="variable constant_">BRA</span>-<span class="title class_">AL00</span>/<span class="variable constant_">BRA</span>-<span class="title class_">AL00</span>/<span class="number">13</span>/<span class="keyword">default</span>/<span class="keyword">default</span>, 构建类型：<span class="keyword">default</span>, 构建用户：<span class="keyword">default</span>, 构建主机：<span class="keyword">default</span>, 构建时间：<span class="keyword">default</span>, 构建版本<span class="title class_">Hash</span>：<span class="keyword">default</span>, 发行版系统名称：, 发行版系统版本号：<span class="number">5.0</span><span class="number">.0</span>, 发行版系统api版本：<span class="number">50001</span>, 发行版系统api版本名称：<span class="number">5.0</span><span class="number">.1</span>, 发行版系统类型：<span class="title class_">Beta3</span>, 开发者匿名设备标识符(<span class="variable constant_">ODID</span>): 2699128d-<span class="number">5975</span>-<span class="number">8985</span>-8af4-bb30ce52....</span><br></pre></td></tr></table></figure>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="/posts/92e22166/demo_output_result.png" alt="alt text"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Shoewann 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Shoewann 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Shoewann
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://shoewann0402.github.io/posts/92e22166.html" title="在 HarmonyOS 中如何使用 Native C++">https://shoewann0402.github.io/posts/92e22166.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/HarmonyOS/" rel="tag"># HarmonyOS</a>
+              <a href="/tags/Native/" rel="tag"># Native</a>
+              <a href="/tags/so/" rel="tag"># so</a>
+              <a href="/tags/cmake/" rel="tag"># cmake</a>
+          </div>
+
+        
+  <div class="social-like a2a_kit a2a_kit_size_32 a2a_default_style">
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a>
+      <a class="a2a_button_wechat"></a>
+      <a class="a2a_button_sina_weibo"></a>
+      <a class="a2a_button_facebook"></a>
+      <a class="a2a_button_x"></a>
+  </div>
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/b3a0121c.html" rel="prev" title="iOS 16 设备如何越狱">
+                  <i class="fa fa-angle-left"></i> iOS 16 设备如何越狱
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS" sid="da2621c7bb137d129fd94cfbae193ad7"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Shoewann</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">3k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/shoewann0402" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js","integrity":"sha256-JJZNsid68vnh3/zyj0lY9BN5ynxVX/12XgOa1TlaYN0="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  <script src="/js/third-party/addtoany.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"ACMTtyiajBtyriIPCjgyQbkW-gzGzoHsz","app_key":"6DCk5HyLXFUQI3gFXrBR7b1z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cywR5Ygc6","appkey":"5246fdc003ffd9f3849bac48c3eee0ad","count":true}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
